@@ -2,9 +2,17 @@ import sys,math,random
 import pygame
 import numpy as np
 from transform import Transform
+import threading
+
+def import_song():
+    from Song1 import Song
+
+thread = threading.Thread(target=import_song)
+thread.start()
 
 pygame.init()
- 
+pygame.mixer.init() 
+
 fps = 60
 fpsClock = pygame.time.Clock()
 
@@ -15,18 +23,14 @@ pygame.display.set_caption("Crab(")
 center_x, center_y = width/2, height/2
 
 
+
 def mirror_point(px, py, ax, ay, bx, by):
-    # Line vector
     lx, ly = bx - ax, by - ay
-    # Normalize line vector
     len_line = (lx**2 + ly**2)**0.5
     lx, ly = lx / len_line, ly / len_line
-    # Point vector
     px, py = px - ax, py - ay
-    # Project point vector onto line vector
     dot = px * lx + py * ly
     proj_x, proj_y = dot * lx, dot * ly
-    # Reflection vector
     rx, ry = proj_x - px, proj_y - py
     return ax + proj_x + rx, ay + proj_y + ry
 
