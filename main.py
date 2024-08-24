@@ -1,4 +1,4 @@
-import sys,math
+import sys,math,random
 import pygame
 import numpy as np
 from transform import Transform
@@ -50,6 +50,14 @@ def blendColors(color1, color2, factor):
 def isInRadius(x1, y1, x2, y2, R):
     distance = ((x2 - x1)**2 + (y2 - y1)**2)**0.5
     return distance <= R
+
+
+def randomizePos():
+    x = random.randint(0, width)
+    y = random.randint(0, height)
+    return (x, y)
+  
+# Crab Math
 crabColorO = (202,0,0)
 crabColorBO = (180,0,6)
 crabAJ1ColorO= (250,0,0)
@@ -80,10 +88,21 @@ crabA3J2S = crabA3J1E
 crabA3J2E = Transform(crabA3J2S.x -50,crabA3J2S.y-20)
 
 howHiden = 0
+
+# Candy Math
+candySBlue = (70,201,255)
+candyMBlue = (70,109,255)
+
+x1,y1 =randomizePos()
+candyPos= Transform(x1,y1)
+candyS1 = Transform(candyPos.x + 5,candyPos.y+15)
+candyS2 = Transform(candyPos.x + 25,candyPos.y+15)
+
 bgColor = (236, 204, 162)
 start_time = pygame.time.get_ticks()
 
 mouseX, mouseY = pygame.mouse.get_pos()
+
 while True:
   screen.fill(bgColor)
   
@@ -103,7 +122,13 @@ while True:
     if event.type == pygame.QUIT:
       pygame.quit()
       sys.exit()
-      
+
+# Candy Display
+  pygame.draw.polygon(screen,candySBlue,(( candyS1.x, candyS1.y),( candyS1.x-10, candyS1.y-10),( candyS1.x-10,candyS1.y+10)))
+  pygame.draw.polygon(screen,candySBlue,(( candyS2.x, candyS2.y),( candyS2.x+10, candyS2.y+10),( candyS2.x+10,candyS2.y-10)))
+  pygame.draw.rect(screen,candyMBlue, (candyPos.x+ 2.5,candyPos.y + 5,25,20))
+
+# Crab Display
   crabColor = blendColors(crabColorO, bgColor, howHiden/5)
   crabColorB =  blendColors(crabColorBO, bgColor, howHiden/5)
   crabAJ1Color= blendColors(crabAJ1ColorO, bgColor, howHiden/5)
@@ -174,7 +199,7 @@ while True:
   
   pygame.draw.line(screen, crabAJ1Color, (crabA3J1S_mirrored.x,crabA3J1S_mirrored.y),(crabA3J1E_mirrored.x,crabA3J1E_mirrored.y),width = 8)
   pygame.draw.line(screen, crabAJ2Color, (crabA3J2S_mirrored.x,crabA3J2S_mirrored.y),(crabA3J2E_mirrored.x,crabA3J2E_mirrored.y),width = 8)
-  
+# Crab Catcher
   speed = 0.0005
   size = 330
   t = pygame.time.get_ticks() * speed 
