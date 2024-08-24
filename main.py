@@ -35,6 +35,30 @@ crabColor = (202,0,0)
 crabAJ1Color= (250,0,0)
 crabAJ2Color= (220,0,0)
 
+crabPos = Transform(250,250)
+crabE1 = Transform(crabPos.x + 10,crabPos.y -35)
+crabEP1 = Transform(crabE1.x + 10, crabE1.y + 5)
+crabE2 = Transform(crabPos.x + 60,crabPos.y -35)
+crabEP2 = Transform(crabE2.x + 10, crabE2.y + 5)
+
+crabA1J1S = Transform(crabPos.x + 10,crabPos.y + 25)
+crabA1J1E = Transform(crabA1J1S.x -50,crabA1J1S.y + 20)
+
+crabA1J2S = crabA1J1E
+crabA1J2E = Transform(crabA1J2S.x -50,crabA1J2S.y-20)
+
+crabA2J1S = Transform(crabPos.x + 10,crabPos.y + 50)
+crabA2J1E = Transform(crabA2J1S.x -50,crabA2J1S.y + 20)
+
+crabA2J2S = crabA2J1E
+crabA2J2E = Transform(crabA2J2S.x -50,crabA2J2S.y-20)
+
+crabA3J1S = Transform(crabPos.x + 10,crabPos.y + 75)
+crabA3J1E = Transform(crabA3J1S.x -50,crabA3J1S.y + 20)
+
+crabA3J2S = crabA3J1E
+crabA3J2E = Transform(crabA3J2S.x -50,crabA3J2S.y-20)
+
 while True:
   screen.fill((236, 204, 162))
   
@@ -49,20 +73,24 @@ while True:
   crabEP1 = Transform(crabE1.x + 10, crabE1.y + 5)
   crabE2 = Transform(crabPos.x + 60,crabPos.y -35)
   crabEP2 = Transform(crabE2.x + 10, crabE2.y + 5)
+  
   crabA1J1S = Transform(crabPos.x + 10,crabPos.y + 25)
   crabA1J1E = Transform(crabA1J1S.x -50,crabA1J1S.y + 20)
   crabA1J2S = crabA1J1E
-  crabA1J2E = Transform(crabA1J2S.x -50,crabA1J2S.y-20)
+  if(crabA1J2E.isMoveNeeded(mouseX, mouseY)):
+    crabA1J2E = Transform(crabA1J2S.x -50,crabA1J2S.y-20)
   
   crabA2J1S = Transform(crabPos.x + 10,crabPos.y + 50)
   crabA2J1E = Transform(crabA2J1S.x -50,crabA2J1S.y + 20)
   crabA2J2S = crabA2J1E
-  crabA2J2E = Transform(crabA2J2S.x -50,crabA2J2S.y-20)
+  if(crabA2J2E.isMoveNeeded(mouseX, mouseY)):
+    crabA2J2E = Transform(crabA2J2S.x -50,crabA2J2S.y-20)
   
   crabA3J1S = Transform(crabPos.x + 10,crabPos.y + 75)
   crabA3J1E = Transform(crabA3J1S.x -50,crabA3J1S.y + 20)
   crabA3J2S = crabA3J1E
-  crabA3J2E = Transform(crabA3J2S.x -50,crabA3J2S.y-20)
+  if(crabA3J2E.isMoveNeeded(mouseX, mouseY)):
+    crabA3J2E = Transform(crabA3J2S.x -50,crabA3J2S.y-20)
   
   pygame.draw.rect(screen, crabColor, (*crabPos,100,100), width=5)
         
