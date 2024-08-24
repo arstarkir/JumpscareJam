@@ -30,11 +30,24 @@ def mirror_joint(joint):
   mirror_start = (crabPos.x + 50, crabPos.y)
   mirror_end = (crabPos.x + 50, crabPos.y + 50)
   return Transform(*mirror_point(joint.x, joint.y, *mirror_start, *mirror_end))
-  
-crabColor = (202,0,0)
-crabAJ1Color= (250,0,0)
-crabAJ2Color= (220,0,0)
 
+def isColorValid(r, g, b):
+    if all(isinstance(i, int) and 0 <= i <= 255 for i in (r, g, b)):
+        return (r, g, b)
+    else:
+        return (216, 184, 122) 
+      
+def blendColors(color1, color2, factor):
+    color1 = (color1[0] - factor*5*25,color1[1],color1[2])
+    return isColorValid(tuple(int(c1 + (c2 - c1) * factor) for c1, c2 in zip(color1, color2))[0],
+                        tuple(int(c1 + (c2 - c1) * factor) for c1, c2 in zip(color1, color2))[1],
+                        tuple(int(c1 + (c2 - c1) * factor) for c1, c2 in zip(color1, color2))[2])
+  
+crabColorO = (202,0,0)
+crabColorBO = (180,0,6)
+crabAJ1ColorO= (250,0,0)
+crabAJ2ColorO = (220,0,0)
+  
 crabPos = Transform(250,250)
 crabE1 = Transform(crabPos.x + 10,crabPos.y -35)
 crabEP1 = Transform(crabE1.x + 10, crabE1.y + 5)
@@ -59,15 +72,37 @@ crabA3J1E = Transform(crabA3J1S.x -50,crabA3J1S.y + 20)
 crabA3J2S = crabA3J1E
 crabA3J2E = Transform(crabA3J2S.x -50,crabA3J2S.y-20)
 
+howHiden = 0
+bgColor = (236, 204, 162)
+start_time = pygame.time.get_ticks()
+
+mouseX, mouseY = pygame.mouse.get_pos()
 while True:
-  screen.fill((236, 204, 162))
+  screen.fill(bgColor)
   
   for event in pygame.event.get():
+    keys = pygame.key.get_pressed()
+    if keys[pygame.K_SPACE]:
+      current_time = pygame.time.get_ticks()
+      if current_time - start_time >= 0:
+        if(howHiden <= 5):
+          howHiden += 1
+        start_time = current_time
+    else:
+      mouseX, mouseY = pygame.mouse.get_pos()
+    if event.type == pygame.KEYUP:
+      howHiden = 0
+   
     if event.type == pygame.QUIT:
       pygame.quit()
       sys.exit()
   
-  mouseX, mouseY = pygame.mouse.get_pos() 
+  crabColor = blendColors(crabColorO, bgColor, howHiden/5)
+  crabColorB =  blendColors(crabColorBO, bgColor, howHiden/5)
+  crabAJ1Color= blendColors(crabAJ1ColorO, bgColor, howHiden/5)
+  crabAJ2Color= blendColors(crabAJ2ColorO, bgColor, howHiden/5)
+  
+   
   crabPos = Transform(mouseX, mouseY)
   crabE1 = Transform(crabPos.x + 10,crabPos.y -35)
   crabEP1 = Transform(crabE1.x + 10, crabE1.y + 5)
@@ -94,7 +129,7 @@ while True:
   
   pygame.draw.rect(screen, crabColor, (*crabPos,100,100), width=5)
         
-  pygame.draw.rect(screen, (180,0,6), (*crabPos ,95,95))
+  pygame.draw.rect(screen, crabColorB, (*crabPos ,95,95))
   
   pygame.draw.rect(screen, (255,255,255), (*crabE1,20,50))
   pygame.draw.rect(screen, (0,0,0), ( crabEP1.x,crabEP1.y,10,10))
