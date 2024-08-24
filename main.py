@@ -57,6 +57,13 @@ def randomizePos():
     y = random.randint(0, height)
     return (x, y)
   
+font = pygame.font.Font(pygame.font.get_default_font(), 16)
+p = 0
+def points(num):
+  text = 'Points: '+ str(num)
+  text = font.render(text,True,(255,255,255))
+  screen.blit(text, (200,20,250,50))
+
 # Crab Math
 crabColorO = (202,0,0)
 crabColorBO = (180,0,6)
@@ -105,7 +112,7 @@ mouseX, mouseY = pygame.mouse.get_pos()
 
 while True:
   screen.fill(bgColor)
-  
+  points(p)
   for event in pygame.event.get():
     keys = pygame.key.get_pressed()
     if keys[pygame.K_SPACE]:
@@ -199,6 +206,14 @@ while True:
   
   pygame.draw.line(screen, crabAJ1Color, (crabA3J1S_mirrored.x,crabA3J1S_mirrored.y),(crabA3J1E_mirrored.x,crabA3J1E_mirrored.y),width = 8)
   pygame.draw.line(screen, crabAJ2Color, (crabA3J2S_mirrored.x,crabA3J2S_mirrored.y),(crabA3J2E_mirrored.x,crabA3J2E_mirrored.y),width = 8)
+  
+  if(isInRadius(crabPos.x,crabPos.y,candyPos.x,candyPos.y,30)):
+    x1,y1 =randomizePos()
+    candyPos= Transform(x1,y1)
+    candyS1 = Transform(candyPos.x + 5,candyPos.y+15)
+    candyS2 = Transform(candyPos.x + 25,candyPos.y+15)
+    p += 100
+    points(p)
 # Crab Catcher
   speed = 0.0005
   size = 330
