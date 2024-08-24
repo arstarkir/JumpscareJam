@@ -1,4 +1,4 @@
-import sys
+import sys,math
 import pygame
 import numpy as np
 from transform import Transform
@@ -10,6 +10,10 @@ fpsClock = pygame.time.Clock()
 
 width, height = 500, 500
 screen = pygame.display.set_mode((width, height))
+pygame.display.set_caption("Crab(")
+
+center_x, center_y = width/2, height/2
+
 
 def mirror_point(px, py, ax, ay, bx, by):
     # Line vector
@@ -43,6 +47,9 @@ def blendColors(color1, color2, factor):
                         tuple(int(c1 + (c2 - c1) * factor) for c1, c2 in zip(color1, color2))[1],
                         tuple(int(c1 + (c2 - c1) * factor) for c1, c2 in zip(color1, color2))[2])
   
+def isInRadius(x1, y1, x2, y2, R):
+    distance = ((x2 - x1)**2 + (y2 - y1)**2)**0.5
+    return distance <= R
 crabColorO = (202,0,0)
 crabColorBO = (180,0,6)
 crabAJ1ColorO= (250,0,0)
@@ -96,12 +103,11 @@ while True:
     if event.type == pygame.QUIT:
       pygame.quit()
       sys.exit()
-  
+      
   crabColor = blendColors(crabColorO, bgColor, howHiden/5)
   crabColorB =  blendColors(crabColorBO, bgColor, howHiden/5)
   crabAJ1Color= blendColors(crabAJ1ColorO, bgColor, howHiden/5)
   crabAJ2Color= blendColors(crabAJ2ColorO, bgColor, howHiden/5)
-  
    
   crabPos = Transform(mouseX, mouseY)
   crabE1 = Transform(crabPos.x + 10,crabPos.y -35)
@@ -169,8 +175,23 @@ while True:
   pygame.draw.line(screen, crabAJ1Color, (crabA3J1S_mirrored.x,crabA3J1S_mirrored.y),(crabA3J1E_mirrored.x,crabA3J1E_mirrored.y),width = 8)
   pygame.draw.line(screen, crabAJ2Color, (crabA3J2S_mirrored.x,crabA3J2S_mirrored.y),(crabA3J2E_mirrored.x,crabA3J2E_mirrored.y),width = 8)
   
+  speed = 0.0005
+  size = 330
+  t = pygame.time.get_ticks() * speed 
+  x = center_x + math.sin(t) * size
+  y = center_y + math.sin(2 * t) / 2 * size 
+  pygame.draw.circle(screen, (216, 184, 122), (int(x), int(y)), 75)
+  if(isInRadius(x,y,*crabPos,50) and howHiden <= 3):
+      pygame.quit()
+      sys.exit()
+    
+  t = pygame.time.get_ticks() * speed 
+  x = center_x + math.sin(t) * size
+  y = center_y + math.cos(t) * size
+  pygame.draw.circle(screen, (216, 184, 122), (int(x), int(y)), 75)
+  if(isInRadius(x,y,*crabPos,50) and howHiden <= 3):
+      pygame.quit()                 
+      sys.exit()
   
   pygame.display.flip()
   fpsClock.tick(fps)
-  
-

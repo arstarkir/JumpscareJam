@@ -19,11 +19,7 @@ class Transform:
   def __iter__(self):
         yield self.x
         yield self.y
-        
-  def isInRadius(x1, y1, x2, y2, R):
-    
-    return distance <= R
-  
+          
   def isMoveNeeded(self, newMX,newMY):
     if(not ((newMX  -  self.mouseX)**2 + (newMY - self.mouseY)**2)**0.5 <= 100):
       self.mouseX, self.mouseY = newMX,newMY
