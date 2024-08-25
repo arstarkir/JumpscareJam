@@ -69,10 +69,10 @@ def points(num):
   screen.blit(text, (200,20,250,50))
 
 # Crab Math
-crabColorO = (202,0,0)
-crabColorBO = (180,0,6)
-crabAJ1ColorO= (250,0,0)
-crabAJ2ColorO = (220,0,0)
+crabColorO = (44, 250, 31)
+crabColorBO = (44, 230, 31)
+crabAJ1ColorO=(0, 250, 0)
+crabAJ2ColorO = (0,220,0)
   
 crabPos = Transform(250,250)
 crabE1 = Transform(crabPos.x + 10,crabPos.y -35)
